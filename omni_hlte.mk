@@ -15,12 +15,27 @@
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from hlte device
-$(call inherit-product, device/samsung/hlte/device.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+
+# Get non-open-source specific aspects
+$(call inherit-product-if-exists, vendor/samsung/hlte/hlte-vendor.mk)
+
+# Overlays
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+
+# Common hlte
+$(call inherit-product, device/samsung/hlte-common/hlte.mk)
+
+# Inherit from our custom product configuration
+$(call inherit-product, vendor/omni/config/common.mk)
+
+# Inherit APNs
+$(call inherit-product, vendor/omni/config/gsm.mk)
+
 
 # Set those variables here to overwrite the inherited values.
-PRODUCT_NAME := full_hltexx
-PRODUCT_DEVICE := hltexx
+PRODUCT_NAME := omni_hlte
+PRODUCT_DEVICE := hlte
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 PRODUCT_MODEL := hlte
